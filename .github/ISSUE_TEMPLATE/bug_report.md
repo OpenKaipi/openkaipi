@@ -10,14 +10,16 @@ labels: bug
 ## What did you expect?
 
 ## Steps to reproduce
+
 1.
 2.
 3.
 
 ## Environment
-- AI app and version:
-- Trick name (if any):
-- OpenKaipi version:
+
+- Notebook:
+- Trick page:
+- Python version:
 - OS:
 
-## Logs or screenshots (remove private information)
+## Logs (remove private information)

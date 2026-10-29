@@ -1,6 +1,6 @@
 ---
 name: Feature request
-about: Suggest an idea for the connector or the project
+about: Suggest an idea for a notebook or the project
 title: "[Feature] "
 labels: enhancement
 ---
