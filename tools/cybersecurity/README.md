@@ -11,6 +11,7 @@ Nothing leaves your computer unless you turn on AI review, notify, or a live tes
 ## Tricks
 
 - [Secret check](secret-check.md) — find keys, tokens, private keys, and passwords in code
+- [Secret triage](secret-triage.md) — attach to your AI chat to run the secret check and triage each finding
 - [Vulnerability check](vuln-check.md) — find common security problems in code
 - [Chatbot audit](chatbot-audit.md) — check a chatbot you own
 - [Full audit](full-audit.md) — run the checks together and save one ZIP
