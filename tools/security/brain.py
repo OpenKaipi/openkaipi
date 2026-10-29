@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OK Audit - Brain
+OpenKaipi Security - Brain
 
 This part uses an AI model (Claude) to review findings. The scanners find
 possible problems. The brain looks at each one and answers:
@@ -59,7 +59,7 @@ MAX_OUTPUT_TOKENS = 12000
 VERDICTS = {"real", "likely_false_positive", "needs_review"}
 
 SYSTEM_PROMPT = (
-    "You are the analysis brain of OK Audit, a defensive security audit "
+    "You are the analysis brain of OpenKaipi Security, a defensive security audit "
     "tool. The OWNER of the code asked for this audit of their own project. "
     "Automated pattern scanners produced the findings you will receive. Your "
     "job is to review each one.\n\n"
@@ -257,7 +257,7 @@ class Brain:
         for r in self.results.values():
             counts[r["verdict"]] += 1
         lines = [
-            "# OK Audit - AI Triage",
+            "# OpenKaipi Security - AI Triage",
             "",
             f"- **Model:** `{self.model}`",
             f"- **Reviewed:** {len(self.results)} finding(s) "

@@ -31,7 +31,7 @@ Examples of tricks we want to have (not all exist yet, see [TODO: status]):
 ```
 connector/   the MCP connector (comes later)
 tricks/      the catalog of community tricks
-tools/       tools you can run today (tools/audit: OK Audit)
+tools/       tools you can run today (tools/security: OpenKaipi Security)
 docs/        documentation
 ```
 
@@ -49,10 +49,10 @@ To start a new trick, copy `tricks/_template/`. See [tricks/README.md](tricks/RE
 Today you can run the audit tools. They need Python 3.8+.
 
 ```
-python tools/audit/secret_scanner.py ./copy-of-your-project
+python tools/security/secret_scanner.py ./copy-of-your-project
 ```
 
-Run it on a copy of your project. It is read-only and writes a report in `./reports/`. See [tools/audit/README.md](tools/audit/README.md).
+Run it on a copy of your project. It is read-only and writes a report in `./reports/`. See [tools/security/README.md](tools/security/README.md).
 
 The MCP connector comes later.
 

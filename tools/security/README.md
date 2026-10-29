@@ -1,6 +1,6 @@
-# OK Audit
+# OpenKaipi Security
 
-OK Audit [TODO: final name] is a set of Python scripts that check a copy of your code for security problems.
+OpenKaipi Security is a set of Python scripts that check a copy of your code for security problems.
 
 ## Tools
 
@@ -26,7 +26,7 @@ Python 3.8+. Only the standard library, except `brain.py` (needs `anthropic`).
 ## Quick start
 
 ```
-python tools/audit/secret_scanner.py ./copy-of-your-project
+python tools/security/secret_scanner.py ./copy-of-your-project
 ```
 
 Reports go to `./reports/`.

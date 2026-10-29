@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OK Audit - Secret Scanner
+OpenKaipi Security - Secret Scanner
 
 This tool scans a COPY of your code. It looks for secrets that someone
 left in the code by mistake: API keys, tokens, private keys, database
@@ -329,7 +329,7 @@ def write_reports(findings: list[Finding], target: str, out_dir: str) -> tuple[s
         counts[f.severity] = counts.get(f.severity, 0) + 1
 
     payload = {
-        "tool": "OK Audit - Secret Scanner",
+        "tool": "OpenKaipi Security - Secret Scanner",
         "scanned_target": os.path.abspath(target),
         "generated_at": _dt.datetime.now().isoformat(timespec="seconds"),
         "summary": counts,
@@ -340,7 +340,7 @@ def write_reports(findings: list[Finding], target: str, out_dir: str) -> tuple[s
         json.dump(payload, fh, indent=2)
 
     lines = [
-        "# OK Audit - Secret Scan Report",
+        "# OpenKaipi Security - Secret Scan Report",
         "",
         f"- **Target:** `{os.path.abspath(target)}`",
         f"- **Generated:** {payload['generated_at']}",
@@ -384,7 +384,7 @@ def write_reports(findings: list[Finding], target: str, out_dir: str) -> tuple[s
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="OK Audit - scan a copy of your code for exposed secrets."
+        description="OpenKaipi Security - scan a copy of your code for exposed secrets."
     )
     parser.add_argument("target", help="Folder with a COPY of your code.")
     parser.add_argument(
@@ -396,7 +396,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Error: '{args.target}' is not a folder.", file=sys.stderr)
         return 2
 
-    print(f"[OK Audit] Scanning: {os.path.abspath(args.target)}")
+    print(f"[OpenKaipi Security] Scanning: {os.path.abspath(args.target)}")
     findings = scan_project(args.target)
 
     counts = {"HIGH": 0, "MEDIUM": 0, "LOW": 0}
@@ -405,10 +405,10 @@ def main(argv: list[str] | None = None) -> int:
 
     md_path, json_path = write_reports(findings, args.target, args.out)
 
-    print(f"[OK Audit] Done. {len(findings)} finding(s): "
+    print(f"[OpenKaipi Security] Done. {len(findings)} finding(s): "
           f"HIGH={counts['HIGH']} MEDIUM={counts['MEDIUM']} LOW={counts['LOW']}")
-    print(f"[OK Audit] Report (Markdown): {md_path}")
-    print(f"[OK Audit] Report (JSON):     {json_path}")
+    print(f"[OpenKaipi Security] Report (Markdown): {md_path}")
+    print(f"[OpenKaipi Security] Report (JSON):     {json_path}")
 
     # Exit code 1 if anything HIGH was found, so automation can react later.
     return 1 if counts["HIGH"] else 0

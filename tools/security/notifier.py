@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OK Audit - Notifier
+OpenKaipi Security - Notifier
 
 Sends urgent findings to your phone or email, so you do not need to watch
 the terminal. Findings that come close together go in ONE message. If a
@@ -42,7 +42,7 @@ LOCAL_HOSTS = {"localhost", "127.0.0.1", "::1"}
 
 
 def _warn(msg: str) -> None:
-    print(f"[OK Audit] Notification problem: {msg}", file=sys.stderr)
+    print(f"[OpenKaipi Security] Notification problem: {msg}", file=sys.stderr)
 
 
 def _ascii(text: str) -> str:
@@ -117,7 +117,7 @@ class Notifier:
     """Collects urgent findings and sends them as one grouped message."""
 
     def __init__(self, send: Callable[[str, str, bool], None],
-                 window: float = 2.0, label: str = "OK Audit") -> None:
+                 window: float = 2.0, label: str = "OpenKaipi Security") -> None:
         self._send = send
         self._window = window
         self._label = label
@@ -187,5 +187,5 @@ if __name__ == "__main__":
     except ValueError as exc:
         print(f"Error: {exc}", file=sys.stderr)
         raise SystemExit(2)
-    test._send("OK Audit test", "If you can read this, alerts work.", False)  # noqa: SLF001
+    test._send("OpenKaipi Security test", "If you can read this, alerts work.", False)  # noqa: SLF001
     print("Test message sent. Check your phone. If nothing comes, check the topic name.")

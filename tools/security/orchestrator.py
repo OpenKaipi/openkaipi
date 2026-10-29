@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OK Audit - Orchestrator
+OpenKaipi Security - Orchestrator
 
 This runs the full audit:
 
@@ -273,26 +273,26 @@ def run_audit(
     if alert_cb is None:
         alert_cb = lambda f: default_alert(f, alerts_log)  # noqa: E731
 
-    workspace = tempfile.mkdtemp(prefix="openkaipi_audit_")
+    workspace = tempfile.mkdtemp(prefix="openkaipi_security_")
     results: dict[str, list] = {}
 
     brain_q: "queue.Queue" = queue.Queue()
     brain_thread = None
     if brain is not None:
         if not brain.available:
-            print(f"[OK Audit] AI brain off: {brain.disabled_reason}")
+            print(f"[OpenKaipi Security] AI brain off: {brain.disabled_reason}")
             brain = None
         else:
             # The brain may never spend more than what the month has left.
             brain.max_run_cost = min(brain.max_run_cost, max(0.0, ledger.remaining() - est_cost))
-            print(f"[OK Audit] AI brain on ({brain.model}), run cap ${brain.max_run_cost:.2f}.")
+            print(f"[OpenKaipi Security] AI brain on ({brain.model}), run cap ${brain.max_run_cost:.2f}.")
             brain_thread = threading.Thread(
                 target=_brain_worker, args=(brain, brain_q, alerts_log), daemon=True)
             brain_thread.start()
 
     try:
         copy_root = make_isolated_copy(source, workspace)
-        print(f"[OK Audit] Copy is ready. The original was not changed.")
+        print(f"[OpenKaipi Security] Copy is ready. The original was not changed.")
 
         # --- Multitasking: run both engines at the same time. ---------------
         def worker(name: str, fn) -> None:
@@ -371,7 +371,7 @@ def run_audit(
             fh.write(summary)
 
         manifest = {
-            "tool": "OK Audit",
+            "tool": "OpenKaipi Security",
             "source": os.path.abspath(source),
             "generated_at": _dt.datetime.now().isoformat(timespec="seconds"),
             "summary": counts,
@@ -392,7 +392,7 @@ def run_audit(
             json.dump(manifest, fh, indent=2)
 
         # --- Package everything into the audit ZIP. -------------------------
-        zip_path = os.path.join(out_dir, f"openkaipi_audit_{stamp}.zip")
+        zip_path = os.path.join(out_dir, f"openkaipi_security_{stamp}.zip")
         with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zf:
             for name in sorted(os.listdir(audit_dir)):
                 zf.write(os.path.join(audit_dir, name), arcname=name)
@@ -400,11 +400,11 @@ def run_audit(
         ledger.record(est_cost + (brain.spent if brain is not None else 0.0))
 
         if brain is not None and brain.disabled_reason:
-            print(f"[OK Audit] AI brain stopped early: {brain.disabled_reason}")
-        print(f"[OK Audit] Audit done. "
+            print(f"[OpenKaipi Security] AI brain stopped early: {brain.disabled_reason}")
+        print(f"[OpenKaipi Security] Audit done. "
               f"HIGH={counts['HIGH']} MEDIUM={counts['MEDIUM']} LOW={counts['LOW']}")
-        print(f"[OK Audit] Audit ZIP: {zip_path}")
-        print(f"[OK Audit] Budget: spent ${ledger.spent:.2f} of "
+        print(f"[OpenKaipi Security] Audit ZIP: {zip_path}")
+        print(f"[OpenKaipi Security] Budget: spent ${ledger.spent:.2f} of "
               f"${ledger.monthly_limit_usd:.2f} this month.")
 
         return {
@@ -423,7 +423,7 @@ def run_audit(
 def _executive_summary(source: str, stamp: str, counts: dict, findings: list[dict]) -> str:
     traffic = "RED" if counts["HIGH"] else ("YELLOW" if counts["MEDIUM"] else "GREEN")
     lines = [
-        "# OK Audit - Audit Summary",
+        "# OpenKaipi Security - Audit Summary",
         "",
         f"- **Status:** {traffic}",
         f"- **Target:** `{os.path.abspath(source)}`",
@@ -462,14 +462,14 @@ def _manual_approvals(ask, label: str, brain):
     approved probe names. With no interactive terminal everything is denied.
     """
     if not sys.stdin.isatty():
-        print("[OK Audit] Manual mode needs an interactive terminal. "
+        print("[OpenKaipi Security] Manual mode needs an interactive terminal. "
               "Live chatbot tests and the AI brain are OFF for this run.")
         return None, None, set()
 
     def yes(question: str) -> bool:
         return input(f"{question} [y/N] ").strip().lower() in {"y", "yes"}
 
-    print("\n[OK Audit] MANUAL MODE: nothing below runs unless you approve it.")
+    print("\n[OpenKaipi Security] MANUAL MODE: nothing below runs unless you approve it.")
     if brain is not None and not yes(
             "Send MASKED finding snippets to Claude? (It costs money and the data leaves this computer.)"):
         brain = None
@@ -488,7 +488,7 @@ def _manual_approvals(ask, label: str, brain):
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="OK Audit - run a full audit on a copy of your code."
+        description="OpenKaipi Security - run a full audit on a copy of your code."
     )
     parser.add_argument("source", help="Folder or .zip with your code.")
     parser.add_argument(
@@ -522,7 +522,7 @@ def main(argv: list[str] | None = None) -> int:
     if not args.authorize:
         print(
             "Not running: --authorize is missing.\n"
-            "OK Audit only tests code you own, or a test setup you have "
+            "OpenKaipi Security only tests code you own, or a test setup you have "
             "permission to test. Run again with --authorize.",
             file=sys.stderr,
         )
@@ -553,7 +553,7 @@ def main(argv: list[str] | None = None) -> int:
             notifier=notifier, allowed_probes=allowed_probes,
         )
     except (RuntimeError, ValueError) as exc:
-        print(f"[OK Audit] {exc}", file=sys.stderr)
+        print(f"[OpenKaipi Security] {exc}", file=sys.stderr)
         return 3
 
     return 1 if result["summary"]["HIGH"] else 0
