@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OpenKaipi Security - Scheduler
+OpenKaipi Cybersecurity - Scheduler
 
 Runs the full audit automatically, so you do not need to start it each time:
 
@@ -89,15 +89,15 @@ def save_state(path: str, state: dict) -> None:
             json.dump(state, fh, indent=2)
         os.replace(tmp, path)
     except OSError as exc:
-        print(f"[OpenKaipi Security] Could not save scheduler state: {exc}", file=sys.stderr)
+        print(f"[OpenKaipi Cybersecurity] Could not save scheduler state: {exc}", file=sys.stderr)
 
 
 def log(msg: str) -> None:
-    print(f"[OpenKaipi Security] {time.strftime('%Y-%m-%d %H:%M:%S')} {msg}", flush=True)
+    print(f"[OpenKaipi Cybersecurity] {time.strftime('%Y-%m-%d %H:%M:%S')} {msg}", flush=True)
 
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="OpenKaipi Security - run audits automatically.")
+    ap = argparse.ArgumentParser(description="OpenKaipi Cybersecurity - run audits automatically.")
     ap.add_argument("source", help="Folder with your code (a .zip works with --every only).")
     ap.add_argument("--authorize", action="store_true",
                     help="Confirm you own or may test this target. Required.")
@@ -121,7 +121,7 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     if not args.authorize:
-        print("Not running: --authorize is missing.\nOpenKaipi Security only tests code you own, "
+        print("Not running: --authorize is missing.\nOpenKaipi Cybersecurity only tests code you own, "
               "or a test setup you have permission to test. Run again with --authorize.", file=sys.stderr)
         return 2
     if not (args.every or args.watch):
@@ -188,7 +188,7 @@ def main(argv: list[str] | None = None) -> int:
                 except RuntimeError as exc:  # monthly budget reached
                     log(str(exc))
                     if notifier is not None:
-                        notifier.send_text("OpenKaipi Security stopped", str(exc), urgent=True)
+                        notifier.send_text("OpenKaipi Cybersecurity stopped", str(exc), urgent=True)
                     return 3
                 except Exception as exc:  # noqa: BLE001 - a 24/7 loop must survive one bad run
                     log(f"Audit failed: {type(exc).__name__}: {exc}. It will try again later.")

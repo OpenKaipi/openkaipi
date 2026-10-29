@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OpenKaipi Security - Chatbot Auditor
+OpenKaipi Cybersecurity - Chatbot Auditor
 
 This tool checks AI chatbots that you OWN. It has two modes:
 
@@ -269,7 +269,7 @@ def probe_chatbot(
         try:
             reply = ask(message) or ""
         except Exception as exc:  # noqa: BLE001 - one failed probe must not stop the rest
-            print(f"[OpenKaipi Security] Probe '{name}' skipped: {exc}", file=sys.stderr)
+            print(f"[OpenKaipi Cybersecurity] Probe '{name}' skipped: {exc}", file=sys.stderr)
             continue
         if detector(reply):
             findings.append(Finding(
@@ -333,7 +333,7 @@ def demo_bot() -> Callable[[str], str]:
 # --------------------------------------------------------------------------- #
 
 def main(argv: list[str] | None = None) -> int:
-    ap = argparse.ArgumentParser(description="OpenKaipi Security - audit chatbots you own.")
+    ap = argparse.ArgumentParser(description="OpenKaipi Cybersecurity - audit chatbots you own.")
     ap.add_argument("target", nargs="?", help="Folder with a COPY of the bot's code (static scan).")
     ap.add_argument("--url", help="HTTP endpoint of a bot you own (live probe).")
     ap.add_argument("--demo", action="store_true", help="Probe the built-in weak demo bot.")
@@ -347,7 +347,7 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     if not args.authorize:
-        print("Not running: --authorize is missing.\nOpenKaipi Security only tests chatbots "
+        print("Not running: --authorize is missing.\nOpenKaipi Cybersecurity only tests chatbots "
               "you own, or a test setup you have permission to test. Run again with --authorize.",
               file=sys.stderr)
         return 2
@@ -359,7 +359,7 @@ def main(argv: list[str] | None = None) -> int:
 
     findings: list[Finding] = []
     if args.target:
-        print(f"[OpenKaipi Security] Static scan of chatbot code: {os.path.abspath(args.target)}")
+        print(f"[OpenKaipi Cybersecurity] Static scan of chatbot code: {os.path.abspath(args.target)}")
         findings += analyze_project(args.target)
     if args.url or args.demo:
         if args.demo:
@@ -368,16 +368,16 @@ def main(argv: list[str] | None = None) -> int:
             headers = dict(h.split(":", 1) for h in args.header if ":" in h)
             headers = {k.strip(): v.strip() for k, v in headers.items()}
             ask, label = http_bot(args.url, args.request_field, args.reply_field, headers), args.url
-        print(f"[OpenKaipi Security] Live test of: {label}")
+        print(f"[OpenKaipi Cybersecurity] Live test of: {label}")
         findings += probe_chatbot(ask, label)
 
     findings.sort(key=lambda f: (SEVERITY_ORDER.get(f.severity, 9), f.file, f.line))
     md, js = write_reports(findings, args.target or label, args.out,
                            tool_name="Chatbot Auditor", file_prefix="chatbot_report")
     counts = {s: sum(f.severity == s for f in findings) for s in SEVERITY_ORDER}
-    print(f"[OpenKaipi Security] Done. {len(findings)} finding(s): "
+    print(f"[OpenKaipi Cybersecurity] Done. {len(findings)} finding(s): "
           f"HIGH={counts['HIGH']} MEDIUM={counts['MEDIUM']} LOW={counts['LOW']}")
-    print(f"[OpenKaipi Security] Report (Markdown): {md}\n[OpenKaipi Security] Report (JSON):     {js}")
+    print(f"[OpenKaipi Cybersecurity] Report (Markdown): {md}\n[OpenKaipi Cybersecurity] Report (JSON):     {js}")
     return 1 if counts["HIGH"] else 0
 
 

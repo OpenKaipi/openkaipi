@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-OpenKaipi Security - Vulnerability Analyzer
+OpenKaipi Cybersecurity - Vulnerability Analyzer
 
 This tool reads a COPY of your code and looks for common security
 problems: injection, unsafe code execution, leaks of personal or
@@ -335,7 +335,7 @@ def write_reports(
         counts[f.severity] = counts.get(f.severity, 0) + 1
 
     payload = {
-        "tool": f"OpenKaipi Security - {tool_name}",
+        "tool": f"OpenKaipi Cybersecurity - {tool_name}",
         "scanned_target": os.path.abspath(target),
         "generated_at": _dt.datetime.now().isoformat(timespec="seconds"),
         "summary": counts,
@@ -346,7 +346,7 @@ def write_reports(
         json.dump(payload, fh, indent=2)
 
     lines = [
-        f"# OpenKaipi Security - {tool_name} Report",
+        f"# OpenKaipi Cybersecurity - {tool_name} Report",
         "",
         f"- **Target:** `{os.path.abspath(target)}`",
         f"- **Generated:** {payload['generated_at']}",
@@ -388,7 +388,7 @@ def write_reports(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="OpenKaipi Security - find vulnerabilities in a copy of your code."
+        description="OpenKaipi Cybersecurity - find vulnerabilities in a copy of your code."
     )
     parser.add_argument("target", help="Folder with a COPY of your code.")
     parser.add_argument("--out", default="./reports", help="Where to write reports.")
@@ -398,7 +398,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Error: '{args.target}' is not a folder.", file=sys.stderr)
         return 2
 
-    print(f"[OpenKaipi Security] Analyzing: {os.path.abspath(args.target)}")
+    print(f"[OpenKaipi Cybersecurity] Analyzing: {os.path.abspath(args.target)}")
     findings = analyze_project(args.target)
 
     counts = {"HIGH": 0, "MEDIUM": 0, "LOW": 0}
@@ -407,10 +407,10 @@ def main(argv: list[str] | None = None) -> int:
 
     md_path, json_path = write_reports(findings, args.target, args.out)
 
-    print(f"[OpenKaipi Security] Done. {len(findings)} finding(s): "
+    print(f"[OpenKaipi Cybersecurity] Done. {len(findings)} finding(s): "
           f"HIGH={counts['HIGH']} MEDIUM={counts['MEDIUM']} LOW={counts['LOW']}")
-    print(f"[OpenKaipi Security] Report (Markdown): {md_path}")
-    print(f"[OpenKaipi Security] Report (JSON):     {json_path}")
+    print(f"[OpenKaipi Cybersecurity] Report (Markdown): {md_path}")
+    print(f"[OpenKaipi Cybersecurity] Report (JSON):     {json_path}")
     return 1 if counts["HIGH"] else 0
 
 

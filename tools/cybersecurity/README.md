@@ -1,6 +1,6 @@
-# OpenKaipi Security
+# OpenKaipi Cybersecurity
 
-OpenKaipi Security is a set of Python scripts that check a copy of your code for security problems.
+OpenKaipi Cybersecurity is a set of Python scripts that check a copy of your code for security problems.
 
 ## Tools
 
@@ -26,7 +26,7 @@ Python 3.8+. Only the standard library, except `brain.py` (needs `anthropic`).
 ## Quick start
 
 ```
-python tools/security/secret_scanner.py ./copy-of-your-project
+python tools/cybersecurity/secret_scanner.py ./copy-of-your-project
 ```
 
 Reports go to `./reports/`.
